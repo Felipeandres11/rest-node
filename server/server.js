@@ -1,8 +1,11 @@
 //este archivo existe y esta configurado en config, podremos ocupar la variable process.env.PORT
 require('./config/config')
+
 //INTEGRACIÓN DEL FRAMEWORK EXPRESS
 const express = require('express')
 const app = express()
+const mongoose = require('mongoose');
+
 //integración de body parser que permite obtener datos enviados al servidor
 const bodyParser = require('body-parser') 
 
@@ -12,39 +15,18 @@ app.use(bodyParser.urlencoded({ extended: false }))
  // parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', function (req, res) {
-  res.json('get usuario')
-})
 
-app.post('/usuario', function (req, res) {
-    
-    let body = req.body;
-    if(body.nombre === undefined){
-        
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es obligatorio'
-        });
-    }else{
-        res.json({
-            persona: body
-        })
-    }
+//TRAER RUTAS 
+app.use( require('./routes/usuario.js') )
 
-    
-  })
 
-app.put('/usuario/:id', function (req, res) {
-    
-    let id = req.params.id
-    res.json({
-        id
-    })
-})
+//CONEXION A MONGODB
 
-app.delete('/usuario', function (req, res) {
-res.json('delete usuario')
-})
+mongoose.connect('mongodb://localhost:27017/cafe', (err, res) => {
+     if(err) throw err;
+     console.log('base de datos ONLINE'
+)})
+
  
 app.listen(process.env.PORT, ()=> {
     console.log('Escuchando puerto: ', 3000)

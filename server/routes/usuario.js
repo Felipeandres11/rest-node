@@ -19,7 +19,7 @@ app.get('/usuario', function (req, res) {
     desde = Number(desde)
     limite = Number(limite)
    
-    Usuario.find({}, 'nombre email img role')
+    Usuario.find({estado: true}, 'nombre email img role estado')
             .skip(desde)
             .limit(limite)
             .exec( (err, usuarios)=>{
@@ -33,7 +33,7 @@ app.get('/usuario', function (req, res) {
                     });
                 }    
 
-                Usuario.count({}, (err, conteo)=>{
+                Usuario.count({estado: true}, (err, conteo)=>{
                     res.json({
                         ok: true,
                         usuarios,
@@ -111,8 +111,12 @@ app.post('/usuario', function (req, res) {
   app.delete('/usuario/:id', function (req, res) {
     
     let id = req.params.id;
+
+    let cambiaEstado = {
+        estado: false
+    }
     
-    Usuario.findByIdAndRemove(id, (err, usuarioBorrado)=> {
+    Usuario.findByIdAndUpdate(id, cambiaEstado, {new: true}, (err, usuarioBorrado)=> {
         
         if(err) {
             

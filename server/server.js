@@ -16,8 +16,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-//TRAER RUTAS 
-app.use( require('./routes/usuario.js') )
+//TRAER RUTAS - CONFIGURACIÓN GLOBAL DE RUTAS
+app.use( require('./routes/index.js') )
+
 
 
 //CONEXION A MONGODB
